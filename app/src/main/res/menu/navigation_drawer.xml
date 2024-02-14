@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/home"
+            android:icon="@drawable/baseline_house_24"
+            android:title="Home"
+            />
+        <item android:id="@+id/contact"
+            android:icon="@drawable/common_full_open_on_phone"
+            android:title="Contact"
+            />
+
+    </group>
+    <item android:title="Profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/about"
+                    android:icon="@drawable/baseline_person_24"
+                    android:title="About"
+                    />
+                <item android:id="@+id/logout"
+                    android:icon="@drawable/baseline_logout_24"
+                    android:title="Logout"
+                    />
+            </group>
+        </menu>
+    </item>
+    <item android:title="Communicate">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/sharing"
+                    android:icon="@drawable/baseline_share_24"
+                    android:title="Share"
+                    />
+                <item android:id="@+id/rate"
+                    android:icon="@drawable/rating"
+                    android:title="Rate Us"
+                    />
+                <item android:id="@+id/policy"
+                    android:icon="@drawable/red_eye_24"
+                    android:title="Privacy Policy"
+                    />
+            </group>
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "305830951038",
+    "firebase_url": "https://onset-a8eaa-default-rtdb.firebaseio.com",
+    "project_id": "onset-a8eaa",
+    "storage_bucket": "onset-a8eaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305830951038:android:89a7a77e116b68ca0ac02f",
+        "android_client_info": {
+          "package_name": "com.example.onset"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSEAoKVPO6AcbYhX5vzsjeYgsVl6kwQIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

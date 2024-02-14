@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/landloardbg"
+    tools:context=".NewApartment"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/gallery"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="#204F65"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="50dp"
+
+                    android:layout_height="50dp"
+                    android:src="@drawable/camera"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Apartment Registration"
+            android:layout_marginTop="15dp"
+            android:id="@+id/textView"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:textAlignment="center"/>
+
+        <Spinner
+            android:id="@+id/spinnerApartment"
+            android:layout_width="match_parent"
+            android:layout_below="@id/textView"
+            android:layout_marginStart="7dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Apartment Title"
+            android:id="@+id/titleapartment"
+            android:layout_marginStart="40dp"
+            android:layout_below="@id/spinnerApartment"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:alpha="0.9"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/edit"
+            android:layout_height="wrap_content"
+            android:hint="eg Salama Apartments"
+            android:layout_below="@id/titleapartment"
+            android:inputType="textAutoComplete"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_below="@id/edit"
+            android:id="@+id/viewreg"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewreg"
+            android:text="Description"
+            android:id="@+id/describe"
+            android:textSize="20sp"
+            android:layout_marginStart="40dp"
+            android:alpha="0.9"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editDescribe"
+            android:hint="eg spacious bedsitter with hot shower"
+            android:layout_below="@id/describe"
+            android:inputType="textAutoComplete"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_below="@id/editDescribe"
+            android:id="@+id/viewreg1"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewreg1"
+            android:text="Price"
+            android:id="@+id/price"
+            android:textSize="20sp"
+            android:layout_marginStart="40dp"
+            android:alpha="0.9"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/price"
+            android:hint="eg Ksh18,000"
+            android:id="@+id/price2"
+            android:inputType="numberDecimal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@id/price2"
+            android:layout_marginTop="1dp"
+            android:id="@+id/radios"
+            android:layout_marginBottom="45dp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:layout_width="0dp"
+                android:id="@+id/radio1"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Monthly"
+
+                />
+            <RadioButton
+                android:layout_width="0dp"
+                android:id="@+id/radio2"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Yearly"
+
+                />
+
+        </LinearLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amenities"
+            android:alpha="0.9"
+            android:id="@+id/amenities"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/radios"
+            android:layout_marginStart="40dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/amenities"
+            android:layout_marginTop="20dp"
+            android:id="@+id/amenitiesLayout"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/security"
+                android:text="Security"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Water"
+                android:id="@+id/water"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Parking"
+                android:id="@+id/parking"
+                android:layout_height="wrap_content"/>
+            <CheckBox
+                android:layout_width="0dp"
+                android:id="@+id/wifi"
+                android:layout_weight="1"
+                android:text="Wi-Fi"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_below="@id/amenitiesLayout"
+            android:id="@+id/view4"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view4"
+            android:text="Location"
+            android:id="@+id/location"
+            android:textSize="20sp"
+            android:layout_marginStart="40dp"
+            android:alpha="0.9"
+            android:textStyle="bold"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="eg Chuka, Ndagani"
+            android:layout_below="@id/location"
+            android:id="@+id/locationtext"
+            android:inputType="text"/>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_below="@id/locationtext"
+            android:id="@+id/view5"
+            android:layout_height="30dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view5"
+            android:text="Number of Rooms"
+            android:id="@+id/noofrooms"
+            android:textSize="20sp"
+            android:layout_marginStart="40dp"
+            android:alpha="0.9"
+            android:textStyle="bold"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="eg 20 rooms"
+            android:layout_below="@id/noofrooms"
+            android:id="@+id/rooms"
+            android:inputType="number"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/submit"
+            android:text="Submit"
+            android:textStyle="bold"
+            android:layout_below="@id/rooms"
+            android:gravity="center"
+            style="@style/Base.Theme.Onset"
+            />
+
+    </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

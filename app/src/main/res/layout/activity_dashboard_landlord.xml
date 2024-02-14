@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/landloardbg"
+    android:layout_height="match_parent"
+    android:id="@+id/drawerLayout"
+    android:padding="10dp"
+    android:gravity="center"
+    tools:context=".DashboardLandlord"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_200"
+        app:cardCornerRadius="50dp"
+        app:cardUseCompatPadding="true"
+        android:elevation="20dp"
+        android:layout_marginBottom="30dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/imageview2"
+            android:background="@color/mysec"
+            android:layout_alignParentEnd="true"
+            app:shapeAppearanceOverlay="@style/circular"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/white"
+            android:padding="5dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            app:srcCompat="@drawable/baseline_person_24"
+            />
+
+        <TextView
+            android:id="@+id/greeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@+id/imageview"
+            android:text="Landlord's Dashboard"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/holder1"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <androidx.cardview.widget.CardView
+            android:layout_width="160dp"
+            android:layout_height="190dp"
+            android:id="@+id/profilelandlord"
+            android:background="#CCCCCC"
+            app:cardCornerRadius="40dp"
+            android:layout_margin="10dp"
+            app:cardElevation="40dp"
+            android:clickable="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:padding="10dp"
+                    android:background="@drawable/iconshape"
+                    android:backgroundTint="@color/purple_700"
+                    android:src="@drawable/baseline_person_24"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/purple"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="160dp"
+            app:cardCornerRadius="40dp"
+            android:layout_height="190dp"
+            android:background="@color/white"
+            android:id="@+id/regNew"
+            app:cardElevation="40dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:padding="10dp"
+                    android:background="@drawable/iconshape"
+                    android:backgroundTint="@color/orange"
+                    android:src="@drawable/baseline_house_24"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Register Apartment"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/purple"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:id="@+id/holder2"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <androidx.cardview.widget.CardView
+            android:layout_width="160dp"
+            android:layout_height="190dp"
+            android:background="@color/white"
+            android:id="@+id/viewBook"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="40dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:padding="10dp"
+                    android:background="@drawable/iconshape"
+                    android:backgroundTint="@color/teal"
+                    android:src="@drawable/red_eye_24"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View Bookings"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/purple"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="160dp"
+            app:cardCornerRadius="40dp"
+            android:layout_height="190dp"
+            android:background="@color/white"
+            android:id="@+id/manageApartment"
+            app:cardElevation="40dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:padding="10dp"
+                    android:background="@drawable/iconshape"
+                    android:backgroundTint="@color/purple_200"
+                    android:src="@drawable/settings"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Apartment"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/purple"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+        
+    
+    
+    
+    <!--
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/nav_header_land_dashboard"
+        app:menu="@menu/navigation_drawer"
+        android:layout_gravity="start"
+        android:id="@+id/navDrawer1"/>
+-->
+
+     <!--   android:layout_gravity="start" -->
+
+
+
+
+
+
+</LinearLayout>

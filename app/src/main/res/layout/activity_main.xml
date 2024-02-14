@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/apartment"
+
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Welcome"
+        android:text="Find Your Perfect Rental To Stay"
+        android:textColor="@color/black"
+        android:textSize="50dp"
+        android:alpha="0.7"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="80dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/view1"
+        android:layout_below="@+id/Welcome"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif"
+        android:textStyle="italic"
+        android:layout_marginLeft="70dp"
+        android:padding="40dp"
+        android:text="We provide fastest way to help you to find your dream home !"
+        android:textSize="20sp"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="180dp"
+        android:onClick="btnClick"
+        android:padding="20dp"
+
+        android:gravity="center"
+
+        style="@style/Base.Theme.Onset"
+
+        android:text="Let's Get Started"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

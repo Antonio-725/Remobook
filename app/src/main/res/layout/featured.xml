@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="16dp"
+    android:id="@+id/bedding1"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="10dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:background="@drawable/apartmentclose"
+            android:layout_height="match_parent"
+            android:id="@+id/bedding"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/short_description"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="A Spacious Bedsitter"
+                android:layout_marginStart="8dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ndagani #Muungoni, Chuka"
+                android:id="@+id/location"
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/likes"
+            android:src="@drawable/likee"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            />
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            app:cardCornerRadius="16dp"
+            android:backgroundTint="@color/orange"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/price"
+                android:layout_height="match_parent"
+                android:text="KSH 15,000"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:gravity="center"/>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

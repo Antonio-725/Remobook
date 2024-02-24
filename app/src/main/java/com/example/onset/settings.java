@@ -98,9 +98,6 @@ public class settings extends Fragment {
             });
 
         }
-
-
-
         // Rest of your onCreateView method...
 
         return view;

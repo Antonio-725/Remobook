@@ -174,12 +174,12 @@
                             android:textStyle="bold"
                             android:id="@+id/apartment"
                             android:textColor="@color/white"
-                            android:text="Apartment Booked "/>
+                            android:text="Apartments Registered"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:id="@+id/apartmentbooked"
+                            android:id="@+id/apartmentcount"
                             android:textColor="@color/white"/>
                     </LinearLayout>
                     <View
@@ -204,7 +204,7 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/editz"
+                android:id="@+id/editzprofile"
                 android:textSize="18sp"
                 style="@style/Base.Theme.Onset"
                 android:gravity="center"

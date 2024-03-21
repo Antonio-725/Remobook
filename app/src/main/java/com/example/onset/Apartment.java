@@ -13,13 +13,16 @@ public class Apartment {
     private boolean parking;
     private boolean wifi;
     private String rentType;
+    private String apartmentType;
+
 
     // Constructor
-    public Apartment(String id, String ownerId, String name, String description, String price, String location, String roomNumber,
-                     boolean security, boolean water, boolean parking, boolean wifi, String rentType) {
-        this.id = id;
-        this.ownerId = ownerId;
+    public Apartment( String name,String ownerId, String description, String price, String location, String roomNumber,
+                     boolean security, boolean water, boolean parking, boolean wifi, String rentType,String apartmentType) {
+
         this.name = name;
+        this.ownerId=ownerId;
+
         this.description = description;
         this.price = price;
         this.location = location;
@@ -29,6 +32,9 @@ public class Apartment {
         this.parking = parking;
         this.wifi = wifi;
         this.rentType = rentType;
+        this.apartmentType=apartmentType;
+
+
     }
 
     // Getters and Setters (You can generate them automatically in most IDEs)

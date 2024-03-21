@@ -1,29 +1,30 @@
 package com.example.onset.model;
 
+import java.util.Collections;
 import java.util.List;
 
 public class item {
     private  String location;
     private  String price;
     private String imageUrl;
-    private List<Integer> images;
+    private List<String> images;
     private  String description;
     private  String shortDescription;
     private  int totalImages;
+   // private String imageUrl;
 
-    public item(){
 
-    }
 
-    public item(String location, String price,String shortDescription) {
+/*    public item(String location, String price,String shortDescription) {
         this.location = location;
         this.price = price;
         this.shortDescription = shortDescription;
-    }
+    }*/
 
-    public item(String location, String price, List<Integer> images, String description, String shortDescription, int totalImages){
+    public item( List<String>images,String imageUrl,String price){
         this.location=location;
         this.price=price;
+        this.imageUrl=imageUrl;
         this.images=images;
         this.description=description;
         this.shortDescription=shortDescription;
@@ -41,17 +42,27 @@ public class item {
     public String getPrice() {
         return price;
     }
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public void setPrice(String price) {
         this.price = price;
     }
 
-    public List<Integer> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<Integer> images) {
-        this.images = images;
+    public void setImages(String imageUrl) {
+        // Assuming imageUrl is a single image URL, convert it to a List<Integer> if needed
+        // For example, if imageUrl is a URL like "https://example.com/image.jpg"
+        // and you want to convert it to a list containing a single element, you can do:
+      //  this.images = Collections.singletonList(imageUrl.hashCode());
     }
 
     public String getDescription() {

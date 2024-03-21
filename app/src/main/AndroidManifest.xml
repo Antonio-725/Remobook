@@ -15,6 +15,12 @@
         android:theme="@style/Base.Theme.Onset"
         tools:targetApi="31">
         <activity
+            android:name=".BookNow"
+            android:exported="false" />
+        <activity
+            android:name=".Editprofile"
+            android:exported="false" />
+        <activity
             android:name=".ManageApartment"
             android:exported="false" />
         <activity

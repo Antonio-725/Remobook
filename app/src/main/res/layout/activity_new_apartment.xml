@@ -29,7 +29,7 @@
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
-
+                    android:id="@+id/imageApartment"
                     android:layout_height="50dp"
                     android:src="@drawable/camera"/>
             </LinearLayout>
@@ -251,6 +251,7 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_marginTop="50dp"
             android:id="@+id/submit"
             android:text="Submit"
             android:textStyle="bold"

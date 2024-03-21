@@ -28,10 +28,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private  static  final  String Tag="RecyclerView";
 
 
-    private List<item>itemList;
+    //private List<item>itemList;
+    private  ArrayList<item>itemList;
     private Context context1;
     private List<item1>itemlist2;
-    public  HomeAdapter(Context context, List<item>itemList){
+    public  HomeAdapter(Context context, ArrayList<item>itemList){
         this.context=context;
         this.itemList=itemList;
     }
@@ -50,18 +51,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        item currentItem = itemList.get(position);
 
-        holder.price.setText(itemList.get(position).getPrice());
-        holder.location.setText(itemList.get(position).getLocation());
-       holder.shortDescription.setText(itemList.get(position).getDescription());
-
-
-      //  Glide.with(context1).load(itemlist2.get(position).getImageUrl()).into(holder.image);
-       // Glide.with(context1).load(itemlist2.get(position).getPrice()).into(holder.price);
+        // Set the price
+        holder.price.setText(currentItem.getPrice());
+        Glide.with(context)
+                .load(itemList.get(position).getImageUrl())
+                .centerCrop()
+                .into(holder.image);
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -70,16 +74,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return itemList.size();
     }
     public  class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView price,location,shortDescription;
-        private ImageView image;
+        public TextView price,location,shortDescription;
+        public ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            price=itemView.findViewById(R.id.price);
+            price=itemView.findViewById(R.id.priceFeatured);
             image=itemView.findViewById(R.id.bedding);
-            location=itemView.findViewById(R.id.location);
-            shortDescription=itemView.findViewById(R.id.short_description);
+          //  location=itemView.findViewById(R.id.location);
+           // shortDescription=itemView.findViewById(R.id.short_description);
 
         }
     }

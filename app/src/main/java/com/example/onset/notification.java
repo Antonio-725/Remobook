@@ -1,6 +1,8 @@
 package com.example.onset;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,14 +10,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.onset.adapters.HomeAdapter;
 import com.example.onset.model.item;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -42,6 +52,7 @@ public class notification extends Fragment {
     private ShapeableImageView imageView;
     private  TextView textViews;
     private Context context;
+    private MaterialButton button;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,6 +114,7 @@ public class notification extends Fragment {
         firestore = FirebaseFirestore.getInstance();
         userID = auth.getCurrentUser().getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
+        button=view.findViewById(R.id.notification);
         DocumentReference reference = firestore.collection("Tenants").document(userID);
         reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -113,6 +125,69 @@ public class notification extends Fragment {
                 }
             }
         });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Fetch details from the Bookings collection
+                FirebaseFirestore.getInstance().collection("Bookings")
+                        .whereEqualTo("username", textView.getText().toString()) // Assuming 'username' is the field containing the user's name
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful() && task.getResult() != null) {
+                                    for (DocumentSnapshot document : task.getResult()) {
+                                        String apartmentName = document.getString("apartmentName");
+                                        String date = document.getString("date");
+                                        String time = document.getString("time");
+                                        String bookingId = document.getId();
+
+                                        // Display a dialog with the fetched details
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                        builder.setTitle("Booking Details")
+                                                .setMessage("Apartment Name: " + apartmentName + "\n"
+                                                        + "Date: " + date + "\n"
+                                                        + "Time: " + time)
+                                                .setPositiveButton("Cancel Booking", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        // Cancel the booking
+                                                        FirebaseFirestore.getInstance().collection("Bookings")
+                                                                .document(bookingId)
+                                                                .delete()
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Toast.makeText(context, "Booking canceled", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Log.e("notification", "Error canceling booking: " + e.getMessage(), e);
+                                                                        Toast.makeText(context, "Failed to cancel booking", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                })
+                                                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                })
+                                                .show();
+                                    }
+                                } else {
+                                    Log.e("notification", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+            }
+        });
+
 
 
 

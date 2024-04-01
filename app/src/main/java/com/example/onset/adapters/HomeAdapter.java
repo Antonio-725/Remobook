@@ -1,10 +1,16 @@
 package com.example.onset.adapters;
 
+//import com.example.onset.home;
+
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.bumptech.glide.Glide;
+import com.example.onset.BookNow;
+import com.example.onset.home;
 import com.google.firebase.FirebaseApp;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onset.R;
@@ -25,6 +34,7 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private Context context;
     private HomeAdapter adapter;
+
     private  static  final  String Tag="RecyclerView";
 
 
@@ -37,11 +47,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         this.itemList=itemList;
     }
 
-   /* public  HomeAdapter(Context context1, List<item1>itemlist2){
-        this.context1=context1;
-        this.itemlist2=itemlist2;
 
-    } */
 
     @NonNull
     @Override
@@ -62,6 +68,31 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .load(itemList.get(position).getImageUrl())
                 .centerCrop()
                 .into(holder.image);
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = holder.getAdapterPosition();
+                item clickedItem = itemList.get(clickedPosition);
+                Intent intent = new Intent(context, BookNow.class);
+                intent.putExtra("ownerId",clickedItem.getOwnerID());
+                intent.putExtra("apartmentId", clickedItem.getApartmentID());
+                intent.putExtra("name", clickedItem.getName());
+                intent.putExtra("price", clickedItem.getPrice());
+                intent.putExtra("description", clickedItem.getDescription());
+                intent.putExtra("roomNumber", clickedItem.getTotalRooms());
+                intent.putExtra("location", clickedItem.getLocation());
+                intent.putExtra("imageUrl", clickedItem.getImageUrl());
+                intent.putExtra("parking", clickedItem.isParking());
+                intent.putExtra("wifi", clickedItem.isWifi());
+                intent.putExtra("security", clickedItem.isSecurity());
+                intent.putExtra("water", clickedItem.isWater());
+                intent.putExtra("rentType", clickedItem.getRentType());
+                context.startActivity(intent);
+                Log.d("BookNow", "Apartment id: " +clickedItem.getApartmentID());
+                Log.d("BookNow", "Apartment owner: " + clickedItem.getOwnerID());
+                Log.d("BookNow", "description: " + clickedItem.getShortDescription());
+            }
+        });
 
     }
 

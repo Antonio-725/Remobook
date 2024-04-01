@@ -37,8 +37,8 @@ import java.util.List;
 
 public class home extends Fragment {
 
-    private RecyclerView rc;
-    private HomeAdapter adapter;
+    public RecyclerView rc;
+    public HomeAdapter adapter;
     //private List<item> itemList;
     ArrayList<item> itemList;
 
@@ -46,7 +46,7 @@ public class home extends Fragment {
     private ShapeableImageView imageView;
     private TextView textView,textView1;
     private CardView cardView;
-    private ImageView image1;
+    public ImageView image1;
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
     private String userID, apartmentId;
@@ -95,74 +95,76 @@ public class home extends Fragment {
         });
 
 
-        itemList = new ArrayList<item>();
+        itemList = new ArrayList<>();
         adapter = new HomeAdapter(requireContext(), itemList);
         fetchApartments();
 
-       /* itemList.add(new item("Street # 1, Chuka", "Ksh 25,000", "3-Bedroom"));
-        itemList.add(new item("Street # 4, Embu", "Ksh 18,000", "4-Bedroom"));
-        itemList.add(new item("Street # 6, Meru", "Ksh 10,000", "1-Bedroom"));
-        adapter = new HomeAdapter(getContext(), itemList);*/
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         rc.setLayoutManager(linearLayoutManager);
         rc.setAdapter(adapter);
 
-       /* cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getContext(), BookNow.class);
-
-
-                startActivity(intent);
-            }
-        });*/
-
-
-
     }
- //   List<String> imagesList = new ArrayList<>();
- private void fetchApartments() {
-     List<String> imagesList = new ArrayList<>();
-     firestore.collection("Apartments")
-             .get()
-             .addOnCompleteListener(task -> {
-                 if (task.isSuccessful()) {
-                     for (DocumentSnapshot document : task.getResult()) {
-                         String imageUrl = document.getString("ApartmentImage");
-                         String price = document.getString("price");
-                         if (imageUrl != null && !imageUrl.isEmpty() && price != null && !price.isEmpty()) {
-                             imagesList.add(imageUrl);
-                             imagesList.add(price); // Add the price as well
-                         }
-                     }
 
-                     // Create items for each image URL
-                    /* for (String imageUrl : imagesList) {
-                         item newItem = new item(imagesList, imageUrl); // Use imagesList instead of Collections.singletonList
-                         itemList.add(newItem);
-                     }*/
-                     for (int i = 0; i < imagesList.size(); i += 2) {
-                         String imageUrl = imagesList.get(i);
-                         String price = imagesList.get(i + 1);
-                         item newItem = new item(null, imageUrl, price); // Pass null for other parameters
-                         itemList.add(newItem);
-                     }
+    public void fetchApartments() {
 
-                     adapter.notifyDataSetChanged();
-                     // Load images after adding all to the itemList
-                     for (String imageUrl : imagesList) {
-                         loadProfileImage1(imageUrl, adapter);
+        List<String> imagesList = new ArrayList<>();
+        firestore.collection("Apartments")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String imageUrl = document.getString("ApartmentImage");
+                            String price = document.getString("price");
+                            String owner=document.getString("ownerId");
+                            String idApartment = document.getId();
+                            String description = document.getString("description");
+                            String name = document.getString("name");
+                            String roomNumber = document.getString("roomNumber");
+                            String rentType = document.getString("rentType");
+                            String location = document.getString("location");
+                            boolean parking = Boolean.TRUE.equals(document.getBoolean("parking"));
+                            boolean wifi = Boolean.TRUE.equals(document.getBoolean("wifi"));
+                            boolean water = Boolean.TRUE.equals(document.getBoolean("water"));
+                            boolean security = Boolean.TRUE.equals(document.getBoolean("security"));
+                            if (imageUrl != null && !imageUrl.isEmpty() && price != null && !price.isEmpty() && description != null && !description.isEmpty()&&idApartment != null && !idApartment.isEmpty()&&owner != null && !owner.isEmpty()) {
+                                item newItem = new item(name, owner,location, price, rentType, imageUrl, description, roomNumber, idApartment, wifi, parking, water, security);
+                               //  item newItem1=new item(owner);
+                                itemList.add(newItem);
+                               // itemList.add(newItem1);
 
-                     }
-                 } else {
-                     Log.e("Fetch Apartments", "Error getting documents: ", task.getException());
-                 }
-                 dialog.dismiss();
-             });
- }
+
+                            }
+
+                        }
+
+                       /* for (int i = 0; i < imagesList.size(); i += 13) {
+                            String imageUrl = imagesList.get(i);
+                            String price = imagesList.get(i + 1);
+                            String apartmentId = imagesList.get(i + 2);
+                            String description = imagesList.get(i + 3);
+                            String name = imagesList.get(i + 4);
+                            String roomNumber = imagesList.get(i + 5);
+                            String rentType = imagesList.get(i + 6);
+                            String location = imagesList.get(i + 7);
+                            boolean parking = Boolean.parseBoolean(imagesList.get(i + 8));
+                            boolean wifi = Boolean.parseBoolean(imagesList.get(i + 9));
+                            boolean water = Boolean.parseBoolean(imagesList.get(i + 10));
+                            boolean security = Boolean.parseBoolean(imagesList.get(i + 11));
+                            String owner=imagesList.get(i+12);
+                            item newItem1 = new item(owner);
+                            item newItem = new item(name, location, price, rentType, imageUrl, description, roomNumber, apartmentId, wifi, parking, water, security);
+                            itemList.add(newItem);
+                            itemList.add(newItem1);
+                        }*/
+
+                        adapter.notifyDataSetChanged();
+
+                    }
+                    dialog.dismiss();
+                });
+    }
 
     public void loadProfileImage1(String imageUrl, HomeAdapter adapter) {
         if (imageUrl != null && !imageUrl.isEmpty() && context != null) {
@@ -189,17 +191,12 @@ public class home extends Fragment {
     }
 
     public void loadProfileImage(String imageUrl) {
-        if (imageUrl != null && !imageUrl.isEmpty() && context != null) {
+        if (imageUrl != null && !imageUrl.isEmpty() && context != null && !getActivity().isDestroyed()) {
             Glide.with(context)
                     .load(imageUrl)
                     .centerCrop()
                     .into(imageView);
-
         }
-    }
-    public void onItemPosition(int position){
-        Intent intent =new Intent(getContext(), BookNow.class);
-        startActivity(intent);
     }
 
 }

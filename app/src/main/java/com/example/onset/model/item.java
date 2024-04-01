@@ -1,34 +1,94 @@
 package com.example.onset.model;
 
-import java.util.Collections;
-import java.util.List;
-
 public class item {
     private  String location;
-    private  String price;
+    private  String price,name;
     private String imageUrl;
-    private List<String> images;
+   // private List<String> images;
     private  String description;
     private  String shortDescription;
-    private  int totalImages;
-   // private String imageUrl;
+    private  String totalRooms;
+    private String apartmentID,rentType,ownerID;
+    private boolean isWifi,isParking,isWater,isSecurity;
 
 
+   /* public item(String ownerID) {
 
-/*    public item(String location, String price,String shortDescription) {
-        this.location = location;
-        this.price = price;
-        this.shortDescription = shortDescription;
+
+        this.ownerID=ownerID;
     }*/
+    public item(String name,String ownerID,String location, String price, String rentType, String imageUrl, String shortDescription, String totalRooms, String apartmentID, boolean isWifi, boolean isParking, boolean isWater, boolean isSecurity) {
 
-    public item( List<String>images,String imageUrl,String price){
-        this.location=location;
-        this.price=price;
-        this.imageUrl=imageUrl;
-        this.images=images;
-        this.description=description;
-        this.shortDescription=shortDescription;
-        this.totalImages=totalImages;
+        this.location = location;
+        this.name=name;
+        this.rentType=rentType;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.shortDescription = shortDescription;
+        this.apartmentID = apartmentID;
+        this.isWifi = isWifi;
+        this.totalRooms=totalRooms;
+        this.isParking = isParking;
+        this.isWater = isWater;
+        this.isSecurity = isSecurity;
+        this.ownerID=ownerID;
+    }
+
+
+    public String getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isWifi() {
+        return isWifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        isWifi = wifi;
+    }
+
+    public boolean isParking() {
+        return isParking;
+    }
+
+    public void setParking(boolean parking) {
+        isParking = parking;
+    }
+
+    public boolean isWater() {
+        return isWater;
+    }
+
+    public void setWater(boolean water) {
+        isWater = water;
+    }
+
+    public boolean isSecurity() {
+        return isSecurity;
+    }
+
+    public void setSecurity(boolean security) {
+        isSecurity = security;
+    }
+
+    public String getApartmentID() {
+        return apartmentID;
+    }
+
+    public void setApartmentID(String apartmentID) {
+        this.apartmentID = apartmentID;
     }
 
     public String getLocation() {
@@ -54,15 +114,10 @@ public class item {
         this.price = price;
     }
 
-    public List<String> getImages() {
-        return images;
-    }
+
 
     public void setImages(String imageUrl) {
-        // Assuming imageUrl is a single image URL, convert it to a List<Integer> if needed
-        // For example, if imageUrl is a URL like "https://example.com/image.jpg"
-        // and you want to convert it to a list containing a single element, you can do:
-      //  this.images = Collections.singletonList(imageUrl.hashCode());
+
     }
 
     public String getDescription() {
@@ -81,11 +136,19 @@ public class item {
         this.shortDescription = shortDescription;
     }
 
-    public int getTotalImages() {
-        return totalImages;
+    public String getTotalRooms() {
+        return totalRooms;
     }
 
-    public void setTotalImages(int totalImages) {
-        this.totalImages = totalImages;
+    public void setTotalRooms(String totalImages) {
+        this.totalRooms = totalImages;
+    }
+
+    public String getRentType() {
+        return rentType;
+    }
+
+    public void setRentType(String rentType) {
+        this.rentType = rentType;
     }
 }

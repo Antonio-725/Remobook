@@ -254,11 +254,9 @@
         android:layout_below="@id/horizontal"
         android:layout_marginStart="16dp"
         android:layout_alignParentBottom="true"
-
         android:layout_marginBottom="40dp"
         android:layout_marginEnd="16dp"
         android:layout_alignParentStart="true"
-
         android:layout_alignParentEnd="true"
        >
     </androidx.recyclerview.widget.RecyclerView>

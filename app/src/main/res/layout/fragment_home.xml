@@ -63,19 +63,21 @@
         android:layout_marginBottom="8dp"
         android:layout_below="@+id/imageview"
         android:layout_marginTop="8dp">
-        
+
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bgsearch"
             android:id="@+id/search"
+            android:background="@drawable/bgsearch"
             android:hint="Search here..."
             android:padding="16dp"
-            android:drawableStart="@drawable/search"
-
-
+            android:drawableEnd="@drawable/search"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             />
+
     </LinearLayout>
             <HorizontalScrollView
                 android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.example.onset;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.onset.adapters.HomeAdapter;
+import com.example.onset.adapters.ImageAdapter;
 import com.example.onset.model.item;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +56,8 @@ public class home extends Fragment {
     private String userID, apartmentId;
     private StorageReference storageReference;
     ProgressDialog dialog;
+    public LinearLayout linearLayout;
+    private TextView searchText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +75,7 @@ public class home extends Fragment {
         textView = view.findViewById(R.id.greeting);
         image1 = view.findViewById(R.id.bedding);
         textView1=view.findViewById(R.id.priceFeatured);
+        linearLayout=view.findViewById(R.id.category);
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -76,6 +83,7 @@ public class home extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference();
         cardView=view.findViewById(R.id.bedding1);
         //dialog=new ProgressDialog(this);
+        searchText=view.findViewById(R.id.search);
         dialog = new ProgressDialog(requireActivity());
 
         dialog.setCancelable(false);
@@ -106,6 +114,40 @@ public class home extends Fragment {
         rc.setAdapter(adapter);
 
     }
+    private void fetchImagesAndShowDialog() {
+        List<String> imagesList = new ArrayList<>();
+        firestore.collection("Apartments").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String imageUrl = document.getString("ApartmentImage");
+                            if (imageUrl != null && !imageUrl.isEmpty()) {
+                                imagesList.add(imageUrl);
+                            }
+                        }
+                        showImageDialog(imagesList);
+                    }
+                });
+    }
+
+    private void showImageDialog(List<String> imagesList) {
+        List<String> namesList = new ArrayList<>();
+        for (item apartment : itemList) {
+            namesList.add(apartment.getName());
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.dialog_image_grid, null);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewImages);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        ImageAdapter adapter = new ImageAdapter(imagesList, namesList);
+        recyclerView.setAdapter(adapter);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     public void fetchApartments() {
 
@@ -139,32 +181,16 @@ public class home extends Fragment {
 
                         }
 
-                       /* for (int i = 0; i < imagesList.size(); i += 13) {
-                            String imageUrl = imagesList.get(i);
-                            String price = imagesList.get(i + 1);
-                            String apartmentId = imagesList.get(i + 2);
-                            String description = imagesList.get(i + 3);
-                            String name = imagesList.get(i + 4);
-                            String roomNumber = imagesList.get(i + 5);
-                            String rentType = imagesList.get(i + 6);
-                            String location = imagesList.get(i + 7);
-                            boolean parking = Boolean.parseBoolean(imagesList.get(i + 8));
-                            boolean wifi = Boolean.parseBoolean(imagesList.get(i + 9));
-                            boolean water = Boolean.parseBoolean(imagesList.get(i + 10));
-                            boolean security = Boolean.parseBoolean(imagesList.get(i + 11));
-                            String owner=imagesList.get(i+12);
-                            item newItem1 = new item(owner);
-                            item newItem = new item(name, location, price, rentType, imageUrl, description, roomNumber, apartmentId, wifi, parking, water, security);
-                            itemList.add(newItem);
-                            itemList.add(newItem1);
-                        }*/
-
                         adapter.notifyDataSetChanged();
 
                     }
                     dialog.dismiss();
                 });
+        linearLayout.setOnClickListener(view -> {
+            fetchImagesAndShowDialog();
+        });
     }
+
 
     public void loadProfileImage1(String imageUrl, HomeAdapter adapter) {
         if (imageUrl != null && !imageUrl.isEmpty() && context != null) {

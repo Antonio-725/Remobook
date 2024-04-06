@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -100,6 +102,18 @@ public class home extends Fragment {
                     loadProfileImage(value.getString("ProfileImage"));
                 }
             }
+        });
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
 
@@ -224,5 +238,16 @@ public class home extends Fragment {
                     .into(imageView);
         }
     }
+    private void filter(String text) {
+        ArrayList<item> filteredList = new ArrayList<>();
+        for (item item : itemList) {
+            if (item.getLocation().toLowerCase().contains(text.toLowerCase())
+                    || item.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        adapter.filterList(filteredList);
+    }
+
 
 }

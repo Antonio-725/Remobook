@@ -118,4 +118,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         }
     }
+    public void filterList(ArrayList<item> filteredList) {
+        itemList = filteredList;
+        notifyDataSetChanged();
+    }
+
 }

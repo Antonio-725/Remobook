@@ -1,10 +1,13 @@
 package com.example.onset;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,9 +72,10 @@ public class ProfileLandlord extends AppCompatActivity {
         reference.addSnapshotListener((value, error) -> {
             if (value != null && value.exists()) {
                 email.setText(value.getString("Email"));
-                Long phoneLong = value.getLong("Phone");
-                if (phoneLong != null) {
-                    phone.setText(String.valueOf(phoneLong));
+               // String phoneLong = value.getLong("Phone");
+                String phoneString = value.getString("Phone");
+                if (phoneString != null) {
+                    phone.setText(phoneString);
                 }
                 loadProfileImage(value.getString("ProfileImage"));
             } else {
@@ -80,6 +86,63 @@ public class ProfileLandlord extends AppCompatActivity {
        // button.setOnClickListener(v -> openGallery());
 
         imageView.setOnClickListener(v -> openGallery());
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create a custom dialog layout for editing profile details
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_profile, null);
+                //EditText editName = dialogView.findViewById(R.id.edit_name);
+                EditText editEmail = dialogView.findViewById(R.id.edit_email);
+                EditText editPhone = dialogView.findViewById(R.id.edit_phone);
+
+                // Set current profile details to the edit fields
+
+                editEmail.setText(email.getText());
+                editPhone.setText(phone.getText());
+
+                // Create a dialog with the custom layout
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileLandlord.this);
+                builder.setView(dialogView);
+                builder.setTitle("Edit Profile");
+                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Save the edited profile details
+                      //  String newName = editName.getText().toString().trim();
+                        String newEmail = editEmail.getText().toString().trim();
+                        String newPhone = editPhone.getText().toString().trim();
+
+                        // Update the profile details in Firestore
+                        DocumentReference reference = firestore.collection("Landlord").document(userID);
+                        reference.update( "Email", newEmail, "Phone", newPhone)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        // Update the UI with the new profile details
+                                       // nameTextView.setText(newName);
+                                        email.setText(newEmail);
+                                        phone.setText(newPhone);
+                                        Toast.makeText(ProfileLandlord.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(ProfileLandlord.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Cancel the dialog
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+        });
     }
 
     private void openGallery() {
@@ -115,6 +178,7 @@ public class ProfileLandlord extends AppCompatActivity {
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(this)
                     .load(imageUrl)
+                    .centerCrop()
                     .into(imageView);
         }
     }

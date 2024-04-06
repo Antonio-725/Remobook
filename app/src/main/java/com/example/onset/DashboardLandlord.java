@@ -85,6 +85,7 @@ public class DashboardLandlord extends AppCompatActivity {
         if (imageUrl != null && !imageUrl.isEmpty() && this != null) {
             Glide.with(this)
                     .load(imageUrl)
+                    .centerCrop()
                     .into(shapeableImageView);
         }
     }

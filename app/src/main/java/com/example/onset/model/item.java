@@ -9,10 +9,11 @@ public class item {
     private  String shortDescription;
     private  String totalRooms;
     private String apartmentID,rentType,ownerID;
-    private boolean isWifi,isParking,isWater,isSecurity;
+    private boolean isWifi,isParking,isWater,isSecurity, isLiked;
+    private int likesCount;
 
 
-   /* public item(String ownerID) {
+    /* public item(String ownerID) {
 
 
         this.ownerID=ownerID;
@@ -34,6 +35,21 @@ public class item {
         this.ownerID=ownerID;
     }
 
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
 
     public String getOwnerID() {
         return ownerID;

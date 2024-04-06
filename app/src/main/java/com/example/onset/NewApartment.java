@@ -8,9 +8,11 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +56,10 @@ public class NewApartment extends AppCompatActivity {
     private Uri selectedImageUri;
     private static final int PICK_IMAGE = 1;
     private Spinner spinner;
+   // private Uri selectedImageUri;
+    private Uri selectedDocumentUri;
+    private MaterialButton uploadDoc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,7 @@ public class NewApartment extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         ownerID = auth.getCurrentUser().getUid();
+        uploadDoc=findViewById(R.id.uploadDocumentButton);
 
         apartmentName = findViewById(R.id.edit);
         description = findViewById(R.id.editDescribe);
@@ -115,6 +122,13 @@ public class NewApartment extends AppCompatActivity {
                 openGallery();
             }
         });
+        uploadDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDocument();
+
+            }
+        });
     }
 
     private void uploadApartmentDetails() {
@@ -149,11 +163,13 @@ public class NewApartment extends AppCompatActivity {
                     }
                 });
     }
+    private static final int PICK_DOCUMENT = 2;
 
-    private void pickImage() {
+    public void openDocument() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE);
+        intent.setType("application/pdf");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, PICK_DOCUMENT);
     }
 
     public void openGallery() {
@@ -163,11 +179,89 @@ public class NewApartment extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data!= null) {
             selectedImageUri = data.getData();
             imageView.setImageURI(selectedImageUri);
+        } else if (requestCode == PICK_DOCUMENT && resultCode == RESULT_OK && data!= null) {
+            selectedDocumentUri = data.getData();
+            String mimeType = getContentResolver().getType(selectedDocumentUri);
+            if (mimeType.equals("application/pdf") || mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+                // Handle the selected document URI here
+                // For example, you can display the document name or path
+                String documentName = getFileName(selectedDocumentUri);
+                Toast.makeText(this, "Document selected: " + documentName, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Please select a PDF or DOCX file", Toast.LENGTH_SHORT).show();
+                selectedDocumentUri = null;
+            }
+        }
+    }
+
+    private String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor!= null && cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (index != -1) {
+                        result = cursor.getString(index);
+                    }
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut!= -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+    public void uploadDocument(String apartmentId) {
+        if (selectedDocumentUri != null) {
+            // Upload the document
+            StorageReference documentRef = storageReference.child("apartment_documents/" + apartmentId + ".pdf");
+            documentRef.putFile(selectedDocumentUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            documentRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String documentUrl = uri.toString();
+                                    // Update the apartment document with the document URL
+                                    firestore.collection("Apartments").document(apartmentId)
+                                            .update("ApartmentDocument", documentUrl)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(context, "Apartment document uploaded successfully", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(context, "Failed to update apartment document URL", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Failed to upload document", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
@@ -188,6 +282,7 @@ public class NewApartment extends AppCompatActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
+                                                    uploadDocument(apartmentId);
                                                     Toast.makeText(context, "Apartment image uploaded successfully", Toast.LENGTH_SHORT).show();
                                                 }
                                             })

@@ -2,7 +2,9 @@ package com.example.onset;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -11,6 +13,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -110,7 +113,66 @@ public class profile extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Create a custom dialog layout
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View dialogView = inflater.inflate(R.layout.dialog_user_details, null);
 
+                // Initialize dialog components
+                EditText dialogUsername = dialogView.findViewById(R.id.editTextName);
+                EditText dialogPhone = dialogView.findViewById(R.id.editTextPhone);
+                EditText dialogEmail = dialogView.findViewById(R.id.editTextEmail);
+
+                // Set user details
+                dialogUsername.setText(username.getText().toString());
+                dialogPhone.setText(phone.getText().toString());
+                dialogEmail.setText(email.getText().toString());
+
+                // Build the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setView(dialogView)
+                        .setTitle("Edit User Details")
+                        .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Handle edit button click
+                                // You can implement the edit functionality here
+                                String newName = dialogUsername.getText().toString();
+                                String newPhone = dialogPhone.getText().toString();
+                                String newEmail = dialogEmail.getText().toString();
+
+                                // Update the UI with the new user details
+                                username.setText(newName);
+                                phone.setText(newPhone);
+                                email.setText(newEmail);
+
+                                // Update the user details in Firestore
+                                firestore.collection("Tenants").document(userID)
+                                        .update("Name", newName, "Email", newEmail, "Phone", Long.parseLong(newPhone))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Handle cancel button click
+                                dialog.dismiss();
+                            }
+                        });
+
+                // Show the dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -176,10 +238,11 @@ public class profile extends Fragment {
         }
     }
     public void loadProfileImage(String imageUrl) {
-        if (imageUrl != null && !imageUrl.isEmpty() && context != null) {
+        if (context != null && imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(context)
                     .load(imageUrl)
                     .into(imageView1);
         }
     }
+
 }

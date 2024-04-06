@@ -7,10 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import com.google.android.gms.tasks.OnFailureListener;
+
 
 import com.bumptech.glide.Glide;
 import com.example.onset.BookNow;
 import com.example.onset.home;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.onset.R;
 import com.example.onset.model.item;
 import com.example.onset.model.item1;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +73,23 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .load(itemList.get(position).getImageUrl())
                 .centerCrop()
                 .into(holder.image);
+        holder.likesCount.setText(String.valueOf(currentItem.getLikesCount()));
+
+        holder.like.setOnClickListener(v -> {
+            int newPosition = holder.getAdapterPosition();
+            if (newPosition != RecyclerView.NO_POSITION) {
+                item clickedItem = itemList.get(newPosition);
+                boolean newLikeStatus = !clickedItem.isLiked();
+                clickedItem.setLiked(newLikeStatus);
+                if (newLikeStatus) {
+                    clickedItem.setLikesCount(clickedItem.getLikesCount() + 1);
+                } else {
+                    clickedItem.setLikesCount(clickedItem.getLikesCount() - 1);
+                }
+                notifyItemChanged(newPosition);
+                updateLikeInFirestore(clickedItem.getApartmentID(), newLikeStatus);
+            }
+        });
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +109,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 intent.putExtra("security", clickedItem.isSecurity());
                 intent.putExtra("water", clickedItem.isWater());
                 intent.putExtra("rentType", clickedItem.getRentType());
+                intent.putExtra("likes", clickedItem.getLikesCount());
+
                 context.startActivity(intent);
                 Log.d("BookNow", "Apartment id: " +clickedItem.getApartmentID());
                 Log.d("BookNow", "Apartment owner: " + clickedItem.getOwnerID());
@@ -105,22 +129,43 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return itemList.size();
     }
     public  class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView price,location,shortDescription;
-        public ImageView image;
+        public TextView price,location,shortDescription,likesCount;
+        public ImageView image,like;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             price=itemView.findViewById(R.id.priceFeatured);
             image=itemView.findViewById(R.id.bedding);
-          //  location=itemView.findViewById(R.id.location);
-           // shortDescription=itemView.findViewById(R.id.short_description);
-
+            like=itemView.findViewById(R.id.likes);
+            likesCount = itemView.findViewById(R.id.likesCount);
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        item clickedItem = itemList.get(position);
+                        boolean newLikeStatus = !clickedItem.isLiked();
+                        clickedItem.setLiked(newLikeStatus);
+                        notifyItemChanged(position);
+                        updateLikeInFirestore(clickedItem.getApartmentID(), newLikeStatus);
+                    }
+                }
+            });
         }
+
+
     }
     public void filterList(ArrayList<item> filteredList) {
         itemList = filteredList;
         notifyDataSetChanged();
     }
+    private void updateLikeInFirestore(String apartmentId, boolean newLikeStatus) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference apartmentRef = firestore.collection("Apartments").document(apartmentId);
 
+        apartmentRef.update("likes", newLikeStatus)
+                .addOnSuccessListener(aVoid -> Log.d("HomeAdapter", "Like status updated successfully"))
+                .addOnFailureListener(e -> Log.e("HomeAdapter", "Error updating like status", e));
+    }
 }

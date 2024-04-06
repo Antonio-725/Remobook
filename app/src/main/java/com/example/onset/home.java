@@ -231,13 +231,14 @@ public class home extends Fragment {
     }
 
     public void loadProfileImage(String imageUrl) {
-        if (imageUrl != null && !imageUrl.isEmpty() && context != null && !getActivity().isDestroyed()) {
+        if (context != null && imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(context)
                     .load(imageUrl)
                     .centerCrop()
                     .into(imageView);
         }
     }
+
     private void filter(String text) {
         ArrayList<item> filteredList = new ArrayList<>();
         for (item item : itemList) {

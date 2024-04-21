@@ -57,6 +57,7 @@ android {
 
 
 dependencies {
+
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.airbnb.android:lottie:3.4.0")

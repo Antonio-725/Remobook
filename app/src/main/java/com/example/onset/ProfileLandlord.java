@@ -175,11 +175,12 @@ public class ProfileLandlord extends AppCompatActivity {
     }
 
     private void loadProfileImage(String imageUrl) {
-        if (imageUrl != null && !imageUrl.isEmpty()) {
+        if (!isDestroyed() && imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(this)
                     .load(imageUrl)
                     .centerCrop()
                     .into(imageView);
         }
     }
+
 }

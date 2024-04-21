@@ -32,10 +32,10 @@ import java.util.Objects;
 
 public class LoginTenant extends AppCompatActivity {
     private TextView text1;
-    private MaterialButton btn;
-    private EditText email, password;
+    public MaterialButton btn;
+    public EditText email, password;
     FirebaseAuth mAuth;
-    private ProgressBar progress;
+    public ProgressBar progress;
 
 
     // @SuppressLint("MissingInflatedId")
